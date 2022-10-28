@@ -1,0 +1,4 @@
+".ssh/authorized_keys":
+  type: file
+  url: https://github.com/sohmc/ssh-keys/releases/download/latest/authorized_keys
+  refreshPeriod: 30m

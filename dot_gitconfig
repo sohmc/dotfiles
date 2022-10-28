@@ -1,0 +1,15 @@
+[user]
+	email = 2767724+sohmc@users.noreply.github.com
+	name = Michael Soh
+[credential]
+	helper = store
+[push]
+	default = simple
+[commit]
+	verbose = true
+[core]
+	editor = vim
+[init]
+	defaultBranch = main
+[pull]
+	rebase = false
