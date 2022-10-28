@@ -104,8 +104,8 @@ echo DIR set to $DIR
 # ALIASES:
 # The ones in the repo will get sourced first.  To override them, use
 # ~/.local_aliases
-if [ -f $DIR/bash_aliases ]; then
-    . $DIR/bash_aliases
+if [ -f $DIR/.bash_aliases ]; then
+    . $DIR/.bash_aliases
 fi
     
 # If ~/.local_aliases exists, then source it last.
