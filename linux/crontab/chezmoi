@@ -1,0 +1,1 @@
+0 * * * * ~/.local/bin/chezmoi -v apply
