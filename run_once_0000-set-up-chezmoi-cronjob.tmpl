@@ -1,8 +1,8 @@
-{{ if eq .chezmoi.os "linux" }}
+{{ if eq .chezmoi.os "linux" -}}
 #!/bin/bash -xe
 
 # crontab/chezmoi hash: {{ include "linux/crontab/chezmoi" | sha256sum }}
-NEW_CRONTAB=$(cat linux/crontab/chezmoi)
+NEW_CRONTAB=$(cat {{ .chezmoi.sourceDir }}/linux/crontab/chezmoi)
 
 echo "Deleting existing chezmoi cronjob"
 crontab -l | grep -v 'bin/chezmoi' | crontab -
