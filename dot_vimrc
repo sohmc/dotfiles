@@ -46,8 +46,8 @@ set magic " Set magic on for regular expressions
 " =- Text, tab, and indent related -= 
 set autoindent
 set smartindent
-set shiftwidth=4
-set softtabstop=4
+set shiftwidth=2
+set softtabstop=2
 set textwidth=72
 set expandtab
 
