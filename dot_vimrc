@@ -1,4 +1,3 @@
-" w
 " =- General settings -=
 set nocompatible
 filetype plugin indent on
