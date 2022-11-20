@@ -49,3 +49,68 @@ export history_write_timestamps=1
 # something you don't intend.
 export PATH=$PATH:$HOME/usr/bin:$HOME/usr/local/bin:$HOME/.local/bin
 
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+# Set the prompt
+#
+## set $nice_name somewhere outside of this script if you have an ugly
+## machine name, like awsrhlueast1a, and want to name it something nicer
+## like sherlock.
+if [ -z $nice_name ]; then
+    userhost="[ \u@\h ]"
+else 
+    userhost="[ \u@\h (${nice_name}) ]"
+fi;
+
+
+if [ "$color_prompt" = yes ]; then
+    if [ "$amiroot" = yes ]; then
+        # Root users get a RED letter prompt
+        userprompt="\[$(tput bold)\]\[$(tput setaf 1)\][ \u@\h ]"
+    else
+        # Normal users get a WHITE letter prompt
+        userprompt="\[$(tput bold)\]\[$(tput setaf 7)\][ \u@\h ]"
+    fi
+
+
+    if [ -z $nice_name ]; then
+        PS1="${userprompt} \[$(tput setaf 3)\]\w\n\[$(tput setaf 6)\]\\$ \[$(tput sgr0)\]"
+    else
+        PS1="\[$(tput bold)\]\[$(tput setaf 7)\][ \u@\h (${nice_name}) ] \[$(tput setaf 3)\]\w\n\[$(tput setaf 6)\]\\$ \[$(tput sgr0)\]"
+    fi
+
+    PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"'
+else
+    if [ -z $nice_name ]; then
+        PS1="[\u@\h]\$ \w\n\$ "
+    else
+        PS1="[\u@\h (${nice_name})]\$ \w\n\$ "
+    fi
+fi
+
+
+# ALIASES:
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
+fi
+    
+# If ~/.local_aliases exists, then source it last.
+if [ -f $HOME/.local_aliases ]; then
+    . $HOME/.local_aliases
+fi

@@ -57,20 +57,6 @@ fi
 # Courtesy of
 # http://stackoverflow.com/questions/59895/can-a-bash-script-tell-which-directory-it-is-stored-in
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-echo DIR set to $DIR
-
-
-# ALIASES:
-# The ones in the repo will get sourced first.  To override them, use
-# ~/.local_aliases
-if [ -f $DIR/.bash_aliases ]; then
-    . $DIR/.bash_aliases
-fi
-    
-# If ~/.local_aliases exists, then source it last.
-if [ -f $HOME/.local_aliases ]; then
-    . $HOME/.local_aliases
-fi
 
 # git bash prompt; attempt to load the personalized version first
 if [ -f $DIR/bash-git-prompt/gitprompt.sh ]; then
