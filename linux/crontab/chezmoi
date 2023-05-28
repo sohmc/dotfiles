@@ -1,1 +1,1 @@
-0 * * * * $HOME/.local/bin/chezmoi -v apply
+0 * * * * $HOME/.local/bin/chezmoi update

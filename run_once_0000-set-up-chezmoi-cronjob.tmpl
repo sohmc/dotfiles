@@ -8,5 +8,5 @@ echo "Deleting existing chezmoi cronjob"
 crontab -l | grep -v 'bin/chezmoi' | crontab -
 
 echo "Adding chezmoi cronjob"
-crontab -l | echo "${NEW_CRONTAB}" | crontab -
+crontab -l | sed "\$a${NEW_CRONTAB}" | crontab -
 {{ end }}
