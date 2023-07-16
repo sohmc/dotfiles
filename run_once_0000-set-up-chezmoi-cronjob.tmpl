@@ -2,11 +2,14 @@
 #!/bin/bash -xe
 
 # crontab/chezmoi hash: {{ include "linux/crontab/chezmoi" | sha256sum }}
+# crontab/chezmoi hash: {{ include "run_once_0000-set-up-chezmoi-cronjob.tmpl" | sha256sum }}
 NEW_CRONTAB=$(cat {{ .chezmoi.sourceDir }}/linux/crontab/chezmoi)
 
 echo "Deleting existing chezmoi cronjob"
 crontab -l | grep -v 'bin/chezmoi' | crontab -
 
+# Inspired by
+# https://askubuntu.com/questions/58575/add-lines-to-cron-from-script
 echo "Adding chezmoi cronjob"
-crontab -l | sed "\$a${NEW_CRONTAB}" | crontab -
+(crontab -l ; echo "${NEW_CRONTAB}") | crontab -
 {{ end }}
