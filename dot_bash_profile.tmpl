@@ -1,0 +1,36 @@
+# .bash_profile is applied for non-interactive logins
+
+export PATH=$PATH:$HOME/usr/bin:$HOME/usr/local/bin:$HOME/.local/bin
+export EDITOR="vim"
+
+# ALIASES:
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
+fi
+    
+# If ~/.local_aliases exists, then source it last.
+if [ -f $HOME/.local_aliases ]; then
+    . $HOME/.local_aliases
+fi
+
+# Execute this on WSL-only instances
+{{ if eq .chezmoi.os "linux" }}
+{{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+# Allow git-credential sharing:
+#   https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
+
+eval "$(ssh-agent -s)"
+ssh-add $HOME/.ssh/id_ed25519
+
+if [ -z "$SSH_AUTH_SOCK" ]; then
+   # Check for a currently running instance of the agent
+   RUNNING_AGENT="`ps -ax | grep 'ssh-agent -s' | grep -v grep | wc -l | tr -d '[:space:]'`"
+   if [ "$RUNNING_AGENT" = "0" ]; then
+        # Launch a new instance of the agent
+        ssh-agent -s &> $HOME/.ssh/ssh-agent
+   fi
+   eval `cat $HOME/.ssh/ssh-agent`
+fi
+
+{{   end }}
+{{ end }}
