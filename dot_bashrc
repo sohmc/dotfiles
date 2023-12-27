@@ -43,12 +43,6 @@ fi
 set -o noclobber
 export history_write_timestamps=1
 
-#### SET THE PATH ####
-# Most of the path should already be set by the ~/.bashrc or system
-# bashrc.  Make sure that you don't overwrite something or introduce
-# something you don't intend.
-export PATH=$PATH:$HOME/usr/bin:$HOME/usr/local/bin:$HOME/.local/bin
-
 
 # If set, the pattern "**" used in a pathname expansion context will
 # match all files and zero or more directories and subdirectories.
@@ -62,10 +56,6 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-# set a fancy prompt (non-color, unless we know we "want" color)
-case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
 
 # Set the prompt
 #
@@ -105,12 +95,19 @@ else
 fi
 
 
-# ALIASES:
-if [ -f $HOME/.bash_aliases ]; then
-    . $HOME/.bash_aliases
-fi
-    
-# If ~/.local_aliases exists, then source it last.
-if [ -f $HOME/.local_aliases ]; then
-    . $HOME/.local_aliases
+# Where am I?
+# Courtesy of
+# http://stackoverflow.com/questions/59895/can-a-bash-script-tell-which-directory-it-is-stored-in
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
