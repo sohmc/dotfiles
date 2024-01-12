@@ -13,9 +13,9 @@ if [ -f $HOME/.local_aliases ]; then
     . $HOME/.local_aliases
 fi
 
-# Execute this on WSL-only instances
 {{ if eq .chezmoi.os "linux" }}
 {{   if (.chezmoi.kernel.osrelease | lower | contains "microsoft") }}
+# Execute this on WSL-only instances
 # Allow git-credential sharing:
 #   https://code.visualstudio.com/remote/advancedcontainers/sharing-git-credentials
 

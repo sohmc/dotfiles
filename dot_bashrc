@@ -4,6 +4,7 @@
 # Set this to something human-readable if the
 # machine hostname is not set
 # export nice_name=''
+export DOTFILES=$DOTFILES:.bashrc
 
 # If this is an xterm set the title to user@host:dir
 case $- in
@@ -111,4 +112,24 @@ if ! shopt -oq posix; then
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
   fi
+fi
+
+# ALIASES:
+if [ -f $HOME/.bash_aliases ]; then
+    . $HOME/.bash_aliases
+fi
+    
+# If ~/.local_aliases exists, then source it last.
+if [ -f $HOME/.local_aliases ]; then
+    . $HOME/.local_aliases
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+# set PATH so it includes user's private bin if it exists
+if [ -d "$HOME/.local/bin" ] ; then
+    PATH="$HOME/.local/bin:$PATH"
 fi
