@@ -18,3 +18,13 @@ apt-get update
 
 apt-get install -y \
   nvidia-container-toolkit
+
+echo "  Setting container configuration to docker..."
+nvidia-ctk runtime configure --runtime=docker
+
+echo "  Restarting docker..."
+systemctl restart docker
+
+echo "  Consider setting no-cgroups to false"
+echo "  https://bbs.archlinux.org/viewtopic.php?pid=1976296#p1976296"
+echo "  /etc/nvidia-container-runtime/config.toml"
