@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # start dropbox VM
-/usr/bin/vboxmanage startvm dropbox
+sleep 60 ; /usr/bin/vboxmanage startvm dropbox
