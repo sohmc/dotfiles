@@ -51,4 +51,4 @@ fi
 
 
 LATEST_BACKUP_FILE=$(ls -Art /viper/mike/home-mike* | tail -n 1)
-echo -e "${LATEST_BACKUP_FILE}" 2>>&1 $HOME/.cache/mike-backup.log
+echo -e "${LATEST_BACKUP_FILE}" >> $HOME/.cache/mike-backup.log
