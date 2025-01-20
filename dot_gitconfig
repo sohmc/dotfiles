@@ -1,15 +1,19 @@
 [user]
 	email = 2767724+sohmc@users.noreply.github.com
 	name = Michael Soh
+	signingkey = ~/.ssh/id_ed25519.pub
 [credential]
 	helper = store
 [push]
 	default = simple
 [commit]
 	verbose = true
+	gpgsign = true
 [core]
 	editor = vim
 [init]
 	defaultBranch = main
 [pull]
 	rebase = false
+[gpg]
+  format = ssh
