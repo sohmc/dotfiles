@@ -5,7 +5,18 @@ DOM=$(date +%d)
 BACKUP_NAME=home-mike
 SOURCE_DIR=/home/mike
 DESTINATION_DIR=/viper/mike
+EXIT_CODE=0
 
+hoas_notify() {
+  TITLE=$1
+  MESSAGE=$2
+
+  DATE=$(date)
+  curl --location 'https://homeassistant.galactica.mikesoh.com:8123/api/webhook/-nBIG0f98fWxNG2Qwim7PjnYe' \
+    --header 'Content-Type: application/x-www-form-urlencoded' \
+    --data-urlencode "title=$1" \
+    --data-urlencode "message=$2"
+}
 
 LEVEL=$(tail -n 1 $HOME/.cache/${BACKUP_NAME}-backup.log| sed -r 's/.*level([0-9]+).*/\1/')
 
@@ -30,8 +41,10 @@ $HOME/.local/bin/backup \
   -l $LEVEL $SOURCE_DIR
 
 if [ "$?" != 0 ]; then
-  echo -e "$(date +"%Y/%m/%d %T") Backup script errored: $?"
-  exit $?
+  EXIT_CODE=$?
+  echo -e "$(date +"%Y/%m/%d %T") Backup script errored: $EXIT_CODE"
+  hoas_notify $BACKUP_NAME "$(date +"%Y/%m/%d %T") Backup script error code: $EXIT_CODE"
+  exit $EXIT_CODE
 fi
 
 
@@ -46,10 +59,14 @@ rclone copy -vv --s3-no-check-bucket \
   $LATEST_BACKUP_FILE home-mike:/${HOSTNAME}
 
 if [ "$?" != 0 ]; then
-  echo -e "rclone errored: $?"
+  EXIT_CODE=$?
+  echo -e "rclone errored: $EXIT_CODE"
+  hoas_notify $BACKUP_NAME "$(date +"%Y/%m/%d %T") rclone error code: $EXIT_CODE"
   exit $?
 fi
 
 
 LATEST_BACKUP_FILE=$(ls -Art ${DESTINATION_DIR}/${BACKUP_NAME}* | tail -n 1)
-echo -e "${LATEST_BACKUP_FILE}" >> $HOME/.cache/mike-backup.log
+echo -e "${LATEST_BACKUP_FILE}" >> $HOME/.cache/$BACKUP_NAME-backup.log
+
+hoas_notify $BACKUP_NAME "$(date +"%Y/%m/%d %T") $LATEST_BACKUP_FILE created and rcloned successfully.\nLevel: $LEVEL / Size: $(du -h "$LATEST_BACKUP_FILE" | cut -f1)"
